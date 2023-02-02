@@ -1,3 +1,6 @@
+const yGridEl = document.querySelector(".y-grid");
+const xGridEl = document.querySelector(".x-grid");
+
 data = {
   candles: [
     {
@@ -28,8 +31,7 @@ data = {
       open: 171.77,
       high: 171.85,
       low: 171.75,
-      //   close: 171.8205,
-      close: 171.5,
+      close: 171.8205,
       volume: 10788,
       datetime: 1675213140000,
     },
@@ -38,30 +40,83 @@ data = {
   empty: false,
 };
 
-console.log(data.candles);
-console.log(data.candles.length);
+let lowestPrice = Number.MAX_SAFE_INTEGER;
+let highestPrice = 0;
 
-data.candles.forEach((candle) => {
-  utcSeconds = candle.datetime;
-  const d = new Date(0);
-  d.setUTCSeconds(utcSeconds);
-  console.log(d);
-});
+getLowestPrice();
+getHighestPrice();
+createGridY();
+createGridX();
 
-let lowOpen = Number.MAX_SAFE_INTEGER;
+function getLowestPrice() {
+  data.candles.forEach((candle) => {
+    let low = Number.MAX_SAFE_INTEGER;
 
-data.candles.forEach((candle) => {
-  let low = Number.MAX_SAFE_INTEGER;
+    if (candle.open < candle.close) {
+      low = candle.open;
+    } else {
+      low = candle.close;
+    }
 
-  if (candle.open < candle.close) {
-    low = candle.open;
-  } else {
-    low = candle.close;
+    if (low < lowestPrice) {
+      lowestPrice = low;
+    }
+  });
+}
+
+function getHighestPrice() {
+  data.candles.forEach((candle) => {
+    let high = 0;
+
+    if (candle.open < candle.close) {
+      high = candle.close;
+    } else {
+      high = candle.open;
+    }
+
+    if (high > highestPrice) {
+      highestPrice = high;
+    }
+  });
+}
+
+function createGridY() {
+  const highest = Math.ceil(highestPrice * 10) / 10;
+  const lowest = Math.floor(lowestPrice * 10) / 10;
+  const step = (highest - lowest) / 4;
+  let top = highest;
+
+  for (let i = 0; i < 5; i++) {
+    const yLabelDiv = document.createElement("div");
+    yLabelDiv.classList.add("y-label");
+    const yLineDiv = document.createElement("div");
+    yLineDiv.classList.add("y-line");
+    yLabelDiv.innerText = "$" + top.toFixed(2);
+
+    yLineDiv.appendChild(yLabelDiv);
+    yGridEl.appendChild(yLineDiv);
+    top -= step;
   }
+}
 
-  if (low < lowOpen) {
-    lowOpen = low;
+function createGridX() {
+  const lastDatetime = data.candles[data.candles.length - 1].datetime;
+  const firstDatetime = data.candles[0].datetime;
+  const step = (lastDatetime - firstDatetime) / 9;
+
+  let start = firstDatetime;
+  let curTime;
+
+  for (let i = 0; i < 10; i++) {
+    const xLineDiv = document.createElement("div");
+    xLineDiv.classList.add("x-line");
+    const xLabelDiv = document.createElement("div");
+    xLabelDiv.classList.add("x-label");
+    curTime = new Date(start);
+    xLabelDiv.innerText = curTime.getHours() + ":" + curTime.getMinutes();
+
+    xLineDiv.appendChild(xLabelDiv);
+    xGridEl.appendChild(xLineDiv);
+    start += step;
   }
-});
-
-console.log(lowOpen);
+}

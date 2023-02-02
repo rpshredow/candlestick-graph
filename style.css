@@ -1,80 +1,117 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+html {
+  font-size: 10px;
+}
+
+:root {
+  --window-length: 160rem;
+  --window-height: 50rem;
+}
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    /* overflow: hidden; */
-    margin: 0;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  /* overflow: hidden; */
+  margin: 0;
 }
 
 .container {
-    display: flex;
-    width: 1200px;
-    height: 500px;
-    align-items: center;
-    justify-content: space-around;
-    /* gap: 10px; */
-    border: 1px solid black;
-    position: relative;
+  display: flex;
+  width: var(--window-length);
+  height: var(--window-height);
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid black;
+  position: relative;
+  font-size: 1.6rem;
 }
 
 .candlestick {
 }
 
 .stick {
-    height: 100px;
-    width: 2px;
-    background-color: greenyellow;
+  height: 100px;
+  width: 2px;
+  background-color: greenyellow;
 }
 
 .box {
-    height: 50px;
-    width: 12px;
-    background-color: greenyellow;
-    transform: translate(-5px, -75px);
+  height: 50px;
+  width: 12px;
+  background-color: greenyellow;
+  transform: translate(-5px, 0);
 }
 
 .x-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    width: 1200px;
-    height: 500px;
-    align-items: center;
-    justify-content: space-around;
-    transform: translateX(-6px);
-    /* border: 3px solid red; */
-    z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: var(--window-length);
+  height: var(--window-height);
+  align-items: center;
+  justify-content: space-between;
+  /* transform: translateX(-6px); */
+  /* border: 3px solid red; */
+  z-index: -1;
+}
+
+.y-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: var(--window-length);
+  height: var(--window-height);
+  align-items: center;
+  justify-content: space-between;
+  /* transform: translateX(-6px); */
+  /* border: 3px solid red; */
+  z-index: -2;
 }
 
 .candlestick-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    width: 1200px;
-    height: 500px;
-    align-items: center;
-    justify-content: space-around;
-    /* border: 3px solid red; */
-    z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: var(--window-length);
+  height: var(--window-height);
+  align-items: flex-end;
+  justify-content: space-around;
+  /* border: 3px solid red; */
+  z-index: -1;
 }
 
 .x-line {
-    height: 500px;
-    width: 1px;
-    background-color: #ddd;
+  height: var(--window-height);
+  width: 1px;
+  background-color: #ddd;
 }
 
 .y-line {
-    height: 1px;
-    width: 1200px;
+  position: relative;
+  height: 1px;
+  width: var(--window-length);
+  background-color: #ddd;
+}
+
+.x-label {
+  position: absolute;
+  top: var(--window-height);
+  transform: translate(-75%, 50%) rotate(315deg);
+}
+
+.y-label {
+  position: absolute;
+  transform: translate(-125%, -50%);
 }
