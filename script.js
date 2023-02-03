@@ -1,44 +1,54 @@
 const yGridEl = document.querySelector(".y-grid");
 const xGridEl = document.querySelector(".x-grid");
 
-data = {
-  candles: [
-    {
-      open: 171.9,
-      high: 171.9,
-      low: 171.82,
-      close: 171.84,
-      volume: 4195,
-      datetime: 1675212960000,
-    },
-    {
-      open: 171.84,
-      high: 171.84,
-      low: 171.75,
-      close: 171.77,
-      volume: 4689,
-      datetime: 1675213020000,
-    },
-    {
-      open: 171.71,
-      high: 171.85,
-      low: 171.71,
-      close: 171.77,
-      volume: 17618,
-      datetime: 1675213080000,
-    },
-    {
-      open: 171.77,
-      high: 171.85,
-      low: 171.75,
-      close: 171.8205,
-      volume: 10788,
-      datetime: 1675213140000,
-    },
-  ],
-  symbol: "TSLA",
-  empty: false,
-};
+let pricedata = fetch(
+  "https://api.tdameritrade.com/v1/marketdata/TSLA/pricehistory?apikey=WBQGUZ4CQPRMK7HF2MXHGHUE5BNMW4P9&periodType=day&period=1&frequencyType=minute&frequency=5"
+);
+
+let candles = [];
+
+pricedata.then((res) => res.json()).then((d) => (candles = d));
+
+console.log(candles);
+
+// const data = {
+//   candles: [
+//     {
+//       open: 171.9,
+//       high: 171.9,
+//       low: 171.82,
+//       close: 171.84,
+//       volume: 4195,
+//       datetime: 1675212960000,
+//     },
+//     {
+//       open: 171.84,
+//       high: 171.84,
+//       low: 171.75,
+//       close: 171.77,
+//       volume: 4689,
+//       datetime: 1675213020000,
+//     },
+//     {
+//       open: 171.71,
+//       high: 171.85,
+//       low: 171.71,
+//       close: 171.77,
+//       volume: 17618,
+//       datetime: 1675213080000,
+//     },
+//     {
+//       open: 171.77,
+//       high: 171.85,
+//       low: 171.75,
+//       close: 171.8205,
+//       volume: 10788,
+//       datetime: 1675213140000,
+//     },
+//   ],
+//   symbol: "TSLA",
+//   empty: false,
+// };
 
 let lowestPrice = Number.MAX_SAFE_INTEGER;
 let highestPrice = 0;
@@ -49,7 +59,7 @@ createGridY();
 createGridX();
 
 function getLowestPrice() {
-  data.candles.forEach((candle) => {
+  candles.forEach((candle) => {
     let low = Number.MAX_SAFE_INTEGER;
 
     if (candle.open < candle.close) {
@@ -65,7 +75,7 @@ function getLowestPrice() {
 }
 
 function getHighestPrice() {
-  data.candles.forEach((candle) => {
+  candles.forEach((candle) => {
     let high = 0;
 
     if (candle.open < candle.close) {
@@ -100,8 +110,8 @@ function createGridY() {
 }
 
 function createGridX() {
-  const lastDatetime = data.candles[data.candles.length - 1].datetime;
-  const firstDatetime = data.candles[0].datetime;
+  const lastDatetime = candles[candles.length - 1].datetime;
+  const firstDatetime = candles[0].datetime;
   const step = (lastDatetime - firstDatetime) / 9;
 
   let start = firstDatetime;
